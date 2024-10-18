@@ -1,7 +1,25 @@
+import { useEffect, useRef } from "react";
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
+
 export default function Portfolio() {
+  const portfolioRef = useRef(null);
+
+  useEffect(() => {
+    const lightbox = new SimpleLightbox(
+      portfolioRef.current.querySelectorAll("a.portfolio-box"),
+      {}
+    );
+
+    return () => {
+      lightbox.destroy();
+    };
+  }, []);
+
   return (
     <>
-      <div id="portfolio">
+      <div id="portfolio" ref={portfolioRef}>
+        {" "}
         <div className="container-fluid p-0">
           <div className="row g-0">
             <div className="col-lg-4 col-sm-6">

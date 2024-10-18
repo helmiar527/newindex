@@ -1,9 +1,8 @@
+import "../../components/index/js/global"
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "simplelightbox/dist/simple-lightbox.min.css";
 import "/src/components/index/css/styles.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "simplelightbox/dist/simple-lightbox.min.js";
 import "/src/components/index/js/scripts.js";
 import Nav from "../../components/index/Nav";
 import Intro from "../../components/index/Intro";
