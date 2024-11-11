@@ -1,15 +1,28 @@
-import "../../components/index/js/global"
+import "../../components/index/js/global";
 import { HelmetProvider, Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "/src/components/index/css/styles.css";
+// import "/src/assets/css/index/styles.css";
+import "../../assets/css/index/styles.css";
+import "aos/dist/aos.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "/src/components/index/js/scripts.js";
+import AOS from "aos";
 import Nav from "../../components/index/Nav";
 import Intro from "../../components/index/Intro";
 import Service from "../../components/index/Service";
+import About from "../../components/index/About";
 import Portfolio from "../../components/index/Portfolio";
+import GetTouch from "../../components/index/GetTouch";
+import Contact from "../../components/index/Contact";
+import Footer from "../../components/index/Footer";
 
 export default function Index() {
+  useEffect(() => {
+    AOS.init({
+      once: true,
+      duration: 1500,
+    });
+  });
   return (
     <>
       <HelmetProvider>
@@ -29,8 +42,12 @@ export default function Index() {
       <section id="page-top">
         <Nav />
         <Intro />
+        <About />
         <Service />
         <Portfolio />
+        <GetTouch />
+        <Contact />
+        <Footer />
       </section>
     </>
   );

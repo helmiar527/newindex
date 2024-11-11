@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "aos": "3.0.0-beta.6",
     "bootstrap": "5.2.3",
     "bootstrap-icons": "^1.11.3",
+    "gsap": "^3.12.5",
+    "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^6.27.0",
+    "react-transition-group": "^4.4.5",
     "simplelightbox": "^2.14.3"
   },
   "devDependencies": {

@@ -11905,3 +11905,23 @@ header.masthead .h1 {
 #portfolio .container-xxl .portfolio-box:hover .portfolio-box-caption {
   opacity: 1;
 }
+
+.nav-item.dropdown .nav-link:first-child {
+  pointer-events: none;
+  cursor: default;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.nav-item.dropdown .nav-link:first-child:hover + .dropdown-menu{
+  display: none;
+}
+
+.dropdown-item {
+color: #6c757d;
+font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+font-weight: 700;
+font-size: 0.9rem;
+}
