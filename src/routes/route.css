@@ -1,0 +1,23 @@
+.app-container {
+  position: relative;
+}
+
+.overlay-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(140, 140, 140, 0.679);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  font-size: 24px;
+  text-align: center; 
+  color: #333; 
+  font-weight: bold; 
+}

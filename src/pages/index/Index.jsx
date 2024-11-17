@@ -2,7 +2,6 @@ import "../../components/index/js/global";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-// import "/src/assets/css/index/styles.css";
 import "../../assets/css/index/styles.css";
 import "aos/dist/aos.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";

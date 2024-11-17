@@ -15,7 +15,7 @@ export default function NavLogin() {
           Signup
         </a>
         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a className="dropdown-item" href="#">
+          <a className="dropdown-item" href="/register">
             Register
           </a>
           <a className="dropdown-item" href="/login">

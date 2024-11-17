@@ -1,4 +1,10 @@
-export default function Footer() {
+import React, { useEffect } from "react";
+
+export default function Footer({ setLoading }) {
+  useEffect(() => {
+    setLoading(false);
+  }, [setLoading]);
+
   return (
     <>
       <footer className="bg-light py-5">
