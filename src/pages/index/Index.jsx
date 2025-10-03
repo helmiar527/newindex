@@ -1,6 +1,7 @@
 import "../../components/index/js/global";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "../../assets/css/index/styles.css";
 import "aos/dist/aos.css";
@@ -15,12 +16,13 @@ import GetTouch from "../../components/index/GetTouch";
 import Contact from "../../components/index/Contact";
 import Footer from "../../components/index/Footer";
 
-export default function Index() {
+export default function Index({ onLoadComplete }) {
   useEffect(() => {
     AOS.init({
       once: true,
       duration: 1500,
     });
+
   });
   return (
     <>
@@ -46,8 +48,12 @@ export default function Index() {
         <Portfolio />
         <GetTouch />
         <Contact />
-        <Footer />
+        <Footer onLoadComplete={onLoadComplete} />
       </section>
     </>
   );
 }
+
+Index.propTypes = {
+  onLoadComplete: PropTypes.func.isRequired,
+};

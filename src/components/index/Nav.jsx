@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import iconImage from "../../assets/img/icon.png";
 import { gsap } from "gsap/dist/gsap";
-import NavLogin from "./NavLogin";
+// import NavLogin from "./NavLogin";
 
 export default function Nav() {
   useEffect(() => {
@@ -63,15 +63,15 @@ export default function Nav() {
       },
     });
 
-    gsap.from(".main-nav-7", {
-      opacity: 0,
-      duration: 1,
-      delay: 0.6,
-      y: -100,
-      onComplete: () => {
-        gsap.to(".main-nav-7", { opacity: 1, y: 0 });
-      },
-    });
+    // gsap.from(".main-nav-7", {
+    //   opacity: 0,
+    //   duration: 1,
+    //   delay: 0.6,
+    //   y: -100,
+    //   onComplete: () => {
+    //     gsap.to(".main-nav-7", { opacity: 1, y: 0 });
+    //   },
+    // });
 
     const navLinks = document.querySelectorAll(".nav-link");
     const setActiveLink = () => {
@@ -202,7 +202,7 @@ export default function Nav() {
                   Contact
                 </a>
               </li>
-              <NavLogin />
+              {/* <NavLogin /> */}
             </ul>
           </div>
         </div>

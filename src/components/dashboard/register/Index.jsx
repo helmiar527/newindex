@@ -1,4 +1,15 @@
-export default function Index() {
+import { useEffect } from "react";
+import PropTypes from "prop-types";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
+export default function Index({ onLoadComplete }) {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onLoadComplete(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [onLoadComplete]);
   return (
     <>
       <div className="container-scroller">
@@ -65,3 +76,7 @@ export default function Index() {
     </>
   );
 }
+
+Index.propTypes = {
+  onLoadComplete: PropTypes.func.isRequired,
+};

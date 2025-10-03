@@ -1,25 +1,29 @@
+// Import environment variables
 import { useState, useEffect } from "react";
 import Alert from "../utility/Alert";
+import useTokenStore from "../../services/token/tokenStore";
+import ApiConfig from "../../config/ApiConfig";
+import useErrorStore from "../../services/err/errorStore";
 
 // Definisikan URL di konstanta
-const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_URL,
-  GET_TOKEN: "/index",
-  SUBMIT_FORM: "/contact",
-};
-
-const getTokenUrl = () => `${API_CONFIG.BASE_URL}${API_CONFIG.GET_TOKEN}`;
-const getSubmitUrl = () => `${API_CONFIG.BASE_URL}${API_CONFIG.SUBMIT_FORM}`;
+const { API_ENDPOINTS } = ApiConfig;
 
 export default function Service() {
+  // State contact
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
-    time: new Date().toLocaleTimeString(),
+    time: new Date()
+      .toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      })
+      .split(" ")[0],
     date: new Date().toLocaleDateString(),
     device: navigator.userAgent,
-    token: "",
   });
 
   const [validated, setValidated] = useState(false);
@@ -31,25 +35,33 @@ export default function Service() {
     message2: "",
   });
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const response = await fetch(getTokenUrl());
-        const data = await response.json();
+  // Menggunakan token dari store
+  const { initializeToken, UseToken } = useTokenStore();
 
-        if (Array.isArray(data) && data.length >= 2 && data[1].token) {
-          setFormData((prevState) => ({
-            ...prevState,
-            token: data[1].token,
-          }));
-        }
+  // Inisialisasi token saat komponen mount
+  useEffect(() => {
+    const initToken = async () => {
+      try {
+        await initializeToken();
       } catch (error) {
-        console.error("Error fetching token:", error);
+        useErrorStore
+          .getState()
+          .addError("token_get_service_contact", "Failed to initialize token");
+        setAlertInfo({
+          show: true,
+          status: "danger",
+          message1: "Error!",
+          message2: "Gagal mengambil token. Silakan refresh halaman.",
+        });
+
+        setTimeout(() => {
+          setAlertInfo((prev) => ({ ...prev, show: false }));
+        }, 3000);
       }
     };
 
-    fetchToken();
-  }, []);
+    initToken();
+  }, [initializeToken]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -73,77 +85,98 @@ export default function Service() {
     setIsLoading(true);
 
     try {
+      // Dapatkan token dari store
+      const token = UseToken();
+
+      if (!token) {
+        useErrorStore
+          .getState()
+          .addError("token_get_service_contact", "Token not found");
+        setAlertInfo({
+          show: true,
+          status: "danger",
+          message1: "Error!",
+          message2: "Token tidak ada. Silakan refresh halaman.",
+        });
+      }
+
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
 
-      const response = await fetch(getSubmitUrl(), {
+      const response = await fetch(API_ENDPOINTS.CONTACT, {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formDataToSend,
       });
 
       const result = await response.json();
-      const { status: responseStatus, message } = result;
+      const { message } = result;
 
-      // Logika untuk menentukan alert berdasarkan response
-      if (response.status === 200 && message === "Contact has send") {
-        setAlertInfo({
-          show: true,
-          status: "success",
-          message1: "Pesan berhasil terkirim!",
-          message2: "Tunggu hingga devloper menangani hal itu.",
-        });
-        // Reset form jika berhasil
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-          time: new Date().toLocaleTimeString(),
-          date: new Date().toLocaleDateString(),
-          device: navigator.userAgent,
-          token: formData.token,
-        });
-        setValidated(false);
-      } else if (response.status === 503 && message === "Server are down") {
-        setAlertInfo({
-          show: true,
-          status: "danger",
-          message1: "Pesan gagal terkirim!",
-          message2: "Terdapat kesalahan di server.",
-        });
-      } else if (response.status === 400) {
-        if (message === "Data Request Does Not Exist") {
+      switch (response.status) {
+        case 200:
+          setAlertInfo({
+            show: true,
+            status: "success",
+            message1: "Pesan berhasil terkirim!",
+            message2: "Tunggu hingga devloper menangani hal itu.",
+          });
+          setFormData({
+            name: "",
+            email: "",
+            message: "",
+            time: new Date().toLocaleTimeString(),
+            date: new Date().toLocaleDateString(),
+            device: navigator.userAgent,
+          });
+          break;
+        case 400:
+          switch (message) {
+            case "Incomplete data request":
+              setAlertInfo({
+                show: true,
+                status: "warning",
+                message1: "Pesan gagal terkirim!",
+                message2: "Kamu tidak mengirim data yang lengkap.",
+              });
+              break;
+            case "Data request does not exist":
+              setAlertInfo({
+                show: true,
+                status: "warning",
+                message1: "Pesan gagal terkirim!",
+                message2: "Kamu tidak mengirim apapun.",
+              });
+              break;
+          }
+          break;
+        case 401:
           setAlertInfo({
             show: true,
             status: "warning",
             message1: "Pesan gagal terkirim!",
-            message2: "Kamu tidak mengirim apapun.",
+            message2: "Token tidak valid, silahkan refresh halaman.",
           });
-        } else if (message === "Incomplete Data Request") {
+          break;
+        case 404:
           setAlertInfo({
             show: true,
             status: "warning",
             message1: "Pesan gagal terkirim!",
-            message2: "Kamu tidak mengirim data yang lengkap.",
+            message2: "Token tidak ditemukan, silahkan refresh halaman.",
           });
-        }
-      } else if (response.status === 404) {
-        if (message === "Token not found") {
+          break;
+        case 503:
           setAlertInfo({
             show: true,
-            status: "warning",
+            status: "danger",
             message1: "Pesan gagal terkirim!",
-            message2: "Token tidak ditemukan, silahkan refresh ulang halaman.",
+            message2: "Terdapat kesalahan di server.",
           });
-        } else if (message === "Token not valid") {
-          setAlertInfo({
-            show: true,
-            status: "warning",
-            message1: "Pesan gagal terkirim!",
-            message2: "Token tidak valid.",
-          });
-        }
+          break;
       }
 
       // Menghilangkan alert setelah 3 detik
@@ -151,7 +184,6 @@ export default function Service() {
         setAlertInfo((prev) => ({ ...prev, show: false }));
       }, 3000);
     } catch (error) {
-      console.error("Error submitting form:", error);
       setAlertInfo({
         show: true,
         status: "danger",
@@ -202,7 +234,6 @@ export default function Service() {
               >
                 <input type="hidden" name="time" value={formData.time} />
                 <input type="hidden" name="date" value={formData.date} />
-                <input type="hidden" name="token" value={formData.token} />
 
                 <div className="form-floating mb-3" data-aos="fade-right">
                   <input

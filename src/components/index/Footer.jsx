@@ -1,9 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import PropTypes from "prop-types";
 
-export default function Footer({ setLoading }) {
+export default function Footer({ onLoadComplete }) {
   useEffect(() => {
-    setLoading(false);
-  }, [setLoading]);
+    const timer = setTimeout(() => {
+      onLoadComplete(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [onLoadComplete]);
 
   return (
     <>
@@ -18,3 +23,7 @@ export default function Footer({ setLoading }) {
     </>
   );
 }
+
+Footer.propTypes = {
+  onLoadComplete: PropTypes.func.isRequired,
+};
