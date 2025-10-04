@@ -1,6 +1,10 @@
 import { useEffect, useRef } from "react";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import SimpleLightbox from "simplelightbox";
+import registerImg from "../../assets/img/portfolio/dashboard/register.png";
+import loginImg from "../../assets/img/portfolio/dashboard/login.png";
+import dashboardImg from "../../assets/img/portfolio/dashboard/dashboard.png";
+import settingImg from "../../assets/img/portfolio/dashboard/setting.png";
 
 export default function Portfolio() {
   const portfolioRef = useRef(null);
@@ -38,12 +42,12 @@ export default function Portfolio() {
               <div className="col-lg-4 col-sm-6">
                 <a
                   className="portfolio-box"
-                  href="/src/assets/img/portfolio/dashboard/register.PNG"
+                  href={registerImg}
                   title="Register Page"
                 >
                   <img
                     className="img-fluid"
-                    src="/src/assets/img/portfolio/dashboard/register.PNG"
+                    src={registerImg}
                     alt="Register Page"
                   />
                   <div className="portfolio-box-caption">
@@ -57,12 +61,12 @@ export default function Portfolio() {
               <div className="col-lg-4 col-sm-6">
                 <a
                   className="portfolio-box"
-                  href="/src/assets/img/portfolio/dashboard/login.PNG"
+                  href={loginImg}
                   title="Login Page"
                 >
                   <img
                     className="img-fluid"
-                    src="/src/assets/img/portfolio/dashboard/login.PNG"
+                    src={loginImg}
                     alt="Login Page"
                   />
                   <div className="portfolio-box-caption">
@@ -76,12 +80,12 @@ export default function Portfolio() {
               <div className="col-lg-4 col-sm-6">
                 <a
                   className="portfolio-box"
-                  href="/src/assets/img/portfolio/dashboard/dashboard.PNG"
+                  href={dashboardImg}
                   title="Dashboard Page"
                 >
                   <img
                     className="img-fluid"
-                    src="/src/assets/img/portfolio/dashboard/dashboard.PNG"
+                    src={dashboardImg}
                     alt="Dashboard Page"
                   />
                   <div className="portfolio-box-caption">
@@ -95,12 +99,12 @@ export default function Portfolio() {
               <div className="col-lg-4 col-sm-6">
                 <a
                   className="portfolio-box"
-                  href="/src/assets/img/portfolio/dashboard/setting.PNG"
+                  href={settingImg}
                   title="Setting Page"
                 >
                   <img
                     className="img-fluid"
-                    src="/src/assets/img/portfolio/dashboard/setting.PNG"
+                    src={settingImg}
                     alt="Setting Page"
                   />
                   <div className="portfolio-box-caption">

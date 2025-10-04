@@ -38,3 +38,8 @@ Project ini untuk frontend aplikasi pribadi yang mencoba adopsi reactjs dengan c
 
 1. Fix untuk pertama upload ke domain utama
 2. Perbaikan minor bug
+
+### **[0.0.11]**
+
+1. Fix api yang terhubung
+2. Fix error pada gambar yang tidak terload
